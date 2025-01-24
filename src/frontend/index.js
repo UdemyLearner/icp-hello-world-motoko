@@ -1,9 +1,9 @@
 import { backend } from "../declarations/backend";
 // import { backend } from "../declarations/backend/backend.did.d.ts"
 
-window.addEventListener("load", function(){
+window.addEventListener("load",async function(){
   console.log("Finish Loading");
-  const currentAmt = backend.checkBalance();
+  const currentAmt = await backend.checkBalance();
   document.getElementById("value").innerHTML = currentAmt;
 })
 
