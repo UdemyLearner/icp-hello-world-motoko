@@ -1,13 +1,41 @@
 import { backend } from "../declarations/backend";
 // import { backend } from "../declarations/backend/backend.did.d.ts"
 
-window.addEventListener("load",async function(){
-  console.log("Finish Loading");
+window.addEventListener("load", async function () {
+  // console.log("Finish Loading");
   const currentAmt = await backend.checkBalance();
-  document.getElementById("value").innerHTML = currentAmt;
-})
+  document.getElementById("value").innerHTML = Math.round(currentAmt * 100) / 100;
+});
+
+document.querySelector("form").addEventListener("submit", async function (event) {
+  event.preventDefault();
+  // console.log("event");
+  const button = event.target.querySelector("#submit-btn");
+  const inputAmt = parseFloat(document.getElementById("input-amount").value);
+  const withdrawalAmt = parseFloat(document.getElementById("withdrawal-amount").value);
+
+  button.setAttribute("disabled", true);
+
+  if (document.getElementById("input-amount").value.length != 0) {
+    await backend.topUp(inputAmt);
+  } 
+  
+
+  if (document.getElementById("withdrawal-amount").value.length != 0) {
+    await backend.withdrawl(withdrawalAmt);
+  }
+
+  await backend.compund();
+
+  const currentAmt = await backend.checkBalance();
+  document.getElementById("value").innerHTML = Math.round(currentAmt * 100) / 100;
 
 
+  document.getElementById("input-amount").value = "";
+  document.getElementById("withdrawal-amount").value = "";
+  button.removeAttribute("disabled");
+
+});
 
 
 
